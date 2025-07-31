@@ -3,9 +3,7 @@ import { ArrowRight } from "lucide-react";
 
 export default function HomePage() {
   return (
-    // The main wrapper needs top padding because the navbar is absolutely positioned
     <div className="bg-background">
-      
       {/* Hero Section */}
       <section className="py-32 sm:py-24">
         <div className="container mx-auto px-6 text-center">
@@ -31,7 +29,7 @@ export default function HomePage() {
                         <Button size="lg" asChild>
                         <a href="tel:0913963003">Book an Appointment</a>
                         </Button>
-                        <Button size="lg" variant="ghost" asChild>
+                        <Button size="lg" variant="secondary" asChild>
                         <a href="#services">Learn More <ArrowRight className="ml-2 h-4 w-4" /></a>
                         </Button>
                     </div>

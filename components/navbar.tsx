@@ -1,6 +1,7 @@
 "use client";
 
 import { Menu } from "lucide-react";
+import { FaGithub } from "react-icons/fa";
 import { Button } from "@/components/ui/button";
 import {
   Sheet,
@@ -21,9 +22,6 @@ const clinicMenu = [
   { title: "Services", url: "#services" },
   { title: "Clinic Info", url: "#info" },
 ];
-const clinicAuth = {
-  login: { title: "Doctor Login", url: "/sign-in" },
-};
 
 interface MenuItem {
   title: string;
@@ -35,17 +33,18 @@ interface NavbarProps {
   auth?: { login: { title: string; url: string } };
 }
 
+const githubUrl = "https://github.com/khoacao2k4/clinic-website";
+
 const ClinicNavbar = ({
   logo = clinicLogo,
-  menu = clinicMenu,
-  auth = clinicAuth,
+  menu = clinicMenu
 }: NavbarProps) => {
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur-sm">
+    <header className="border-border/40 bg-background/95 supports-backdrop-filter:bg-background/60 sticky top-0 z-50 w-full border-b backdrop-blur-sm">
       <div className="container mx-auto flex h-14 items-center">
         {/* Desktop Nav */}
         <div className="mr-4 hidden md:flex">
-          <a href={logo.url} className="mr-6 flex items-center space-x-2">
+          <a href={logo.url} className="mx-6 flex items-center space-x-2">
             <span className="font-bold text-foreground text-xl">{logo.title}</span>
           </a>
           <nav className="flex items-center space-x-6 text-sm font-medium">
@@ -92,13 +91,21 @@ const ClinicNavbar = ({
 
               {/* Auth Controls at the bottom */}
               <div className="mt-auto">
-                <div className="flex items-center justify-between mb-4">
-                  <span className="text-md text-muted-foreground">Theme</span>
-                  <ModeToggle />
+                <div className="flex flex-col space-y-4">
+                  <div className="flex items-center justify-between">
+                    <span className="text-md text-muted-foreground">Theme</span>
+                    <ModeToggle />
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-md text-muted-foreground">Github</span>
+                    <Button asChild variant="outline" size="icon">
+                      <a href={githubUrl} target="_blank" rel="noopener noreferrer">
+                        <FaGithub className="h-4 w-4" />
+                        <span className="sr-only">GitHub</span>
+                      </a>
+                    </Button>
+                  </div>
                 </div>
-                <Button asChild className="w-full h- text-lg">
-                  <a href={auth.login.url}>{auth.login.title}</a>
-                </Button>
               </div>
             </SheetContent>
           </Sheet>
@@ -108,8 +115,8 @@ const ClinicNavbar = ({
         <div className="flex flex-1 items-center justify-end">
           <nav className="hidden md:flex items-center gap-2">
             <ModeToggle />
-            <Button asChild variant="secondary" size="sm" className="h-8">
-              <a href={auth.login.url}>{auth.login.title}</a>
+            <Button variant="outline" size="icon">
+              <a href="https://github.com/khoacao2k4/clinic-website" target="_blank" rel="noopener noreferrer"><FaGithub /></a>
             </Button>
           </nav>
         </div>

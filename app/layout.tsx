@@ -25,9 +25,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             enableSystem
             disableTransitionOnChange
         >
-          <ClinicNavbar />
-          {children}
-          <ClinicFooter />
+          <div className="flex flex-col min-h-screen bg-background">
+            <ClinicNavbar />
+            {children}
+            <ClinicFooter />
+          </div>
         </ThemeProvider>
       </body>
     </html>
