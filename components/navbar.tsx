@@ -1,5 +1,3 @@
-"use client";
-
 import { Menu } from "lucide-react";
 import { FaGithub } from "react-icons/fa";
 import { Button } from "@/components/ui/button";
@@ -12,6 +10,7 @@ import {
   SheetTrigger
 } from "@/components/ui/sheet";
 import { ModeToggle } from "./mode-toggle";
+import Link from "next/link";
 
 // Data and interfaces remain the same
 const clinicLogo = {
@@ -30,7 +29,6 @@ interface MenuItem {
 interface NavbarProps {
   logo?: { title: string; url: string };
   menu?: MenuItem[];
-  auth?: { login: { title: string; url: string } };
 }
 
 const githubUrl = "https://github.com/khoacao2k4/clinic-website";
@@ -44,18 +42,18 @@ const ClinicNavbar = ({
       <div className="container mx-auto flex h-14 items-center">
         {/* Desktop Nav */}
         <div className="mr-4 hidden md:flex">
-          <a href={logo.url} className="mx-6 flex items-center space-x-2">
+          <Link href={logo.url} className="mx-6 flex items-center space-x-2">
             <span className="font-bold text-foreground text-xl">{logo.title}</span>
-          </a>
+          </Link>
           <nav className="flex items-center space-x-6 text-sm font-medium">
             {menu.map((item) => (
-              <a
+              <Link
                 key={item.title}
                 href={item.url}
                 className="text-muted-foreground transition-colors hover:text-foreground/80"
               >
                 {item.title}
-              </a>
+              </Link>
             ))}
           </nav>
         </div>
@@ -72,9 +70,9 @@ const ClinicNavbar = ({
             <SheetContent side="left" className="flex flex-col p-6">
               <SheetHeader className="text-left mb-4">
                 <SheetTitle>
-                  <a href={logo.url} className="flex items-center space-x-2">
+                  <Link href={logo.url} className="flex items-center space-x-2">
                     <span className="text-xl font-bold">{logo.title}</span>
-                  </a>
+                  </Link>
                 </SheetTitle>
                 <SheetDescription className="sr-only">
                   Main navigation menu
@@ -83,9 +81,9 @@ const ClinicNavbar = ({
               
               <nav className="flex flex-col gap-2">
                 {menu.map((item) => (
-                  <a key={item.title} href={item.url} className="text-2xl font-semibold text-foreground/90 hover:text-foreground py-2">
+                  <Link key={item.title} href={item.url} className="text-2xl font-semibold text-foreground/90 hover:text-foreground py-2">
                     {item.title}
-                  </a>
+                  </Link>
                 ))}
               </nav>
 

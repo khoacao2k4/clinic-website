@@ -1,4 +1,5 @@
 import { Mail } from 'lucide-react';
+import Link from 'next/link';
 
 export default function ClinicFooter() {
     const navLinks = [
@@ -14,21 +15,21 @@ export default function ClinicFooter() {
         <footer className="py-16 bg-background border-t">
             <div className="mx-auto w-full max-w-7xl px-6">
                 <div className="flex flex-col items-center justify-between gap-6 sm:flex-row">
-                    <a href="/" className="flex items-center gap-2">
+                    <Link href="/" className="flex items-center gap-2">
                         <span className="text-xl leading-none font-bold tracking-tight text-foreground">
                           Dr. Huỳnh Khánh Trang
                         </span>
-                    </a>
+                    </Link>
                     
                     <div className="flex items-center gap-6">
                       {navLinks.map((link) => (
-                        <a 
+                        <Link 
                           key={link.title} 
                           href={link.url} 
                           className="text-muted-foreground hover:text-foreground text-sm font-medium transition-colors"
                         >
                           {link.title}
-                        </a>
+                        </Link>
                       ))}
                     </div>
                 </div>

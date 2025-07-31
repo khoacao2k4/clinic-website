@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
+import Image from "next/image";
 
 export default function HomePage() {
   return (
@@ -10,11 +11,11 @@ export default function HomePage() {
           <div className="grid items-center gap-24 lg:grid-cols-2">
                 {/* Left Column: Image */}
                 <div className="order-last lg:order-first">
-                    <img 
-                        src="https://placehold.co/800x600/18181b/ffffff?text=Clinic+Image" 
-                        alt="A modern optometry clinic interior" 
-                        className="rounded-2xl aspect-[4/3] object-cover shadow-lg"
-                    />
+                  <Image 
+                    src="https://placehold.co/800x600/18181b/ffffff?text=Clinic+Image" 
+                    alt="A modern optometry clinic interior" 
+                    className="rounded-2xl aspect-[4/3] object-cover shadow-lg"
+                  />
                 </div>
 
                 {/* Right Column: Text Content */}
