@@ -38,11 +38,11 @@ export default function ClinicFooter() {
                 
                 <div className="flex flex-col items-center justify-between gap-6 sm:flex-row-reverse">
                     <a
-                        href={`mailto:${clinicEmail}`}
-                        className="text-muted-foreground hover:text-foreground inline-flex items-center gap-2 text-sm font-medium transition-colors"
+                      href={`mailto:${clinicEmail}`}
+                      className="text-muted-foreground hover:text-foreground inline-flex items-center gap-2 text-sm font-medium transition-colors"
                     >
-                        <Mail className="size-4" />
-                        {clinicEmail}
+                      <Mail className="size-4" />
+                      {clinicEmail}
                     </a>
                     <p className="text-muted-foreground text-sm">© {new Date().getFullYear()} {clinicName}. All rights reserved.</p>
                 </div>
