@@ -12,9 +12,12 @@ export default function HomePage() {
                 {/* Left Column: Image */}
                 <div className="order-last lg:order-first">
                   <Image 
-                    src="https://placehold.co/800x600/18181b/ffffff?text=Clinic+Image" 
+                    src="https://placehold.co/800x600/18181b/ffffff?text=Clinic+Image"
+                    width={800}
+                    height={600}
                     alt="A modern optometry clinic interior" 
                     className="rounded-2xl aspect-[4/3] object-cover shadow-lg"
+                    unoptimized
                   />
                 </div>
 
