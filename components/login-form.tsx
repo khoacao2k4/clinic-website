@@ -30,7 +30,7 @@ export function LoginForm({
             onClick={async () => {
               "use server"
               try {
-                await signIn(provider.id);
+                await signIn(provider.id, { redirectTo: "/dashboard" });
               } catch (error) {
                 // Signin can fail for a number of reasons, such as the user
                 // not existing, or the user not having the correct role.
