@@ -7,6 +7,8 @@ on:
 
 jobs:
   deploy:
+    # Change this to true to enable this workflow
+    if: false 
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
