@@ -2,8 +2,18 @@ import { FaEye } from "react-icons/fa";
 import { LoginForm } from "@/components/login-form"
 import { ModeToggle } from "@/components/mode-toggle";
 import Image from "next/image";
+import { auth } from "@/lib/auth";
+import { redirect } from "next/navigation";
 
-export default function LoginPage() {
+export default async function LoginPage() {
+  // Fetch the session on the server
+  const session = await auth()
+  
+  // If session exists, redirect to the dashboard
+  if (session) {
+    redirect("/dashboard")
+  }
+
   return (
     <div className="grid min-h-svh lg:grid-cols-2">
       <div className="absolute top-3 right-3 z-50">

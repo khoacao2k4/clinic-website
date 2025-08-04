@@ -3,6 +3,7 @@ import Github from "next-auth/providers/github"
 import type { Provider } from "next-auth/providers"
  
 const providers: Provider[] = [ Github ]
+const whitelist = process.env.ALLOWED_EMAILS?.split(',') || [];
 
 export const providerMap = providers
   .map((provider) => {
@@ -19,5 +20,14 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   pages: {
     signIn: "/login",
     error: "/error",
+  },
+  callbacks: {
+    async signIn({ profile }) {
+      console.log(profile)
+      // Check if the user has a whitelisted email
+      if (profile?.email && whitelist.includes(profile?.email))
+        return true
+      return false
+    },
   }
 })
