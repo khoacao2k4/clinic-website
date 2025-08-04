@@ -1,11 +1,37 @@
-import React from 'react'
+import { FaEye } from "react-icons/fa";
+import { LoginForm } from "@/components/login-form"
+import { ModeToggle } from "@/components/mode-toggle";
+import Image from "next/image";
 
-const page = () => {
+export default function LoginPage() {
   return (
-    <div>
-      Hello
+    <div className="grid min-h-svh lg:grid-cols-2">
+      <div className="absolute top-3 right-3 z-50">
+        <ModeToggle />
+      </div>
+      <div className="flex flex-col gap-4 p-6 md:p-10">
+        <div className="flex justify-center gap-2 md:justify-start">
+          <a href="#" className="flex items-center gap-2 font-medium">
+            <div className="bg-primary text-primary-foreground flex size-6 items-center justify-center rounded-md">
+              <FaEye className="size-4"/>
+            </div>
+            Dr. Huỳnh Khánh Trang
+          </a>
+        </div>
+        <div className="flex flex-1 items-center justify-center">
+          <div className="w-full max-w-xs">
+            <LoginForm />
+          </div>
+        </div>
+      </div>
+      <div className="bg-muted relative hidden lg:block">
+        <Image
+          src="https://picsum.photos/2500/2500"
+          fill
+          alt="Random background image"
+          className="absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
+        />
+      </div>
     </div>
   )
 }
-
-export default page
