@@ -1,8 +1,9 @@
 import NextAuth from "next-auth"
 import Github from "next-auth/providers/github"
+import Google from "next-auth/providers/google"
 import type { Provider } from "next-auth/providers"
  
-const providers: Provider[] = [ Github ]
+const providers: Provider[] = [ Google, Github ]
 const whitelist = process.env.ALLOWED_EMAILS?.split(',') || [];
 
 export const providerMap = providers

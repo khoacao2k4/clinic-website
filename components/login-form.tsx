@@ -1,17 +1,32 @@
+'use client'
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { FaGoogle } from "react-icons/fa";
 import { FaGithub } from "react-icons/fa";
-import { providerMap, signIn } from "@/lib/auth";
-import { redirect } from "next/navigation";
-import { AuthError } from "next-auth";
+import { providerMap } from "@/lib/auth";
+import { signIn } from "next-auth/react"
+import { JSX, useState } from "react";
+import { Loader2Icon } from "lucide-react";
 
 const SIGNIN_ERROR_URL = "/error"
+
+const iconMap: Record<string, JSX.Element> = {
+  "Google": <FaGoogle />,
+  "GitHub": <FaGithub />,
+}
+
 
 // Updated props as the form doesn't need standard form attributes anymore
 export function LoginForm({
   className
 }: React.HTMLAttributes<"div">) {
+  const [loadingProvider, setLoadingProvider] = useState<string | null>(null)
+
+  const handleSignIn = async (providerId: string, providerName: string) => {
+    setLoadingProvider(providerName);
+    await signIn(providerId, { callbackUrl: "/dashboard" })
+  }
+
   return (
     // Changed from <form> to <div> as it no longer submits form data directly
     <div className={cn("flex flex-col gap-6", className)}>
@@ -27,28 +42,20 @@ export function LoginForm({
             key={provider.id} 
             variant="outline" 
             className="w-full" 
-            onClick={async () => {
-              "use server"
-              try {
-                await signIn(provider.id, { redirectTo: "/dashboard" });
-              } catch (error) {
-                // Signin can fail for a number of reasons, such as the user
-                // not existing, or the user not having the correct role.
-                // In some cases, you may want to redirect to a custom error
-                if (error instanceof AuthError) {
-                  return redirect(`${SIGNIN_ERROR_URL}?error=${error.type}`)
-                }
-  
-                // Otherwise if a redirects happens Next.js can handle it
-                // so you can just re-thrown the error and let Next.js handle it.
-                // Docs:
-                // https://nextjs.org/docs/app/api-reference/functions/redirect#server-component
-                throw error
-              }
-            }}
+            onClick={() => handleSignIn(provider.id, provider.name)}
+            disabled={loadingProvider === provider.name}  
           >
-            <FaGithub className="mr-2" />
-            Login with {provider.name}
+            {loadingProvider === provider.name ? (
+              <>
+                <Loader2Icon className="mr-2 h-4 w-4 animate-spin" />
+                Please wait
+              </>
+            ) : (
+              <>
+                {iconMap[provider.name]}
+                Login with {provider.name}
+              </>
+            )}
           </Button>
         ))}
       </div>

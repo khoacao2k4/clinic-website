@@ -4,6 +4,7 @@ import { ModeToggle } from "@/components/mode-toggle";
 import Image from "next/image";
 import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
+import Link from "next/link";
 
 export default async function LoginPage() {
   // Fetch the session on the server
@@ -21,12 +22,12 @@ export default async function LoginPage() {
       </div>
       <div className="flex flex-col gap-4 p-6 md:p-10">
         <div className="flex justify-center gap-2 md:justify-start">
-          <a href="#" className="flex items-center gap-2 font-medium">
+          <Link href="/" className="flex items-center gap-2 font-medium">
             <div className="bg-primary text-primary-foreground flex size-6 items-center justify-center rounded-md">
               <FaEye className="size-4"/>
             </div>
             Dr. Huỳnh Khánh Trang
-          </a>
+          </Link>
         </div>
         <div className="flex flex-1 items-center justify-center">
           <div className="w-full max-w-xs">
