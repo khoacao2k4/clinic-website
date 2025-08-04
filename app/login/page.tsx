@@ -29,7 +29,7 @@ export default function LoginPage() {
           src="https://picsum.photos/2500/2500"
           fill
           alt="Random background image"
-          className="absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
+          className="absolute inset-0 h-full w-full object-cover dark:grayscale"
         />
       </div>
     </div>
