@@ -14,7 +14,7 @@ app.use(cors())
 app.use(errorHandler)
 
 app.get('/api/health', (req, res) => {
-  res.status(200).json({ status: 'ok', message: 'Backend is running!' });
+  res.status(200).json({ status: 'ok', message: 'Dr Trang Clinic API is running!' });
 });
 
 app.use((_req, res) => {
