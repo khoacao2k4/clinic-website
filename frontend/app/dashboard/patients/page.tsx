@@ -4,7 +4,6 @@ import { DataTable } from "@/components/ui/data-table";
 import { columns } from "@/components/columns";
 import { Patient } from "@/utils/patient-schema";
 
-// MOCK DATA: In a real app, you would fetch this from your backend API
 const patients: Patient[] = [
   { id: "1", name: "Nguyen Van A", email: "nguyenvana@email.com", gender: "Male", dateOfBirth: "1990-01-15" },
   { id: "2", name: "Tran Thi B", email: "tranthib@email.com", gender: "Female", dateOfBirth: "1988-03-22" },
@@ -22,7 +21,8 @@ const patients: Patient[] = [
 
 export default async function PatientsPage() {
   return (
-    <>
+    <div className="flex h-[calc(100vh-5rem)] flex-col gap-4 my-auto">
+      {/* Page header (will take its natural height) */}
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold tracking-tight">
@@ -36,7 +36,9 @@ export default async function PatientsPage() {
           <Plus className="mr-2 h-4 w-4" /> Add New Patient
         </Button>
       </div>
-      <DataTable searchKey="name" columns={columns} data={patients} />
-    </>
+      <div className="flex-1 overflow-hidden">
+        <DataTable searchKey="name" columns={columns} data={patients} />
+      </div>
+    </div>
   );
 }
