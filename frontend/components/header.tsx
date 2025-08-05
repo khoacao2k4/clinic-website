@@ -5,7 +5,7 @@ import { Separator } from "@/components/ui/separator";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { NavUser } from "@/components/nav-user";
 import { usePathname } from "next/navigation";
-import { SessionProvider } from "next-auth/react";
+import { ModeToggle } from "@/components/mode-toggle";
 import React from "react";
 
 // A helper function to capitalize strings
@@ -18,7 +18,7 @@ export function Header() {
 
   return (
     <header className="sticky top-0 z-10 flex h-16 shrink-0 items-center justify-between gap-2 border-b bg-background/95 px-4 backdrop-blur-sm">
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-2 w-full">
         <SidebarTrigger className="-ml-1" />
         <Separator
           orientation="vertical"
@@ -42,6 +42,9 @@ export function Header() {
             ))}
           </BreadcrumbList>
         </Breadcrumb>
+        <div className="flex-1 flex justify-end">
+          <ModeToggle />
+        </div>
       </div>
     </header>
   );

@@ -2,6 +2,7 @@ import * as React from "react"
 import {
   FileText,
   Users,
+  Home
 } from "lucide-react"
 import { FaEye } from "react-icons/fa"
 
@@ -26,9 +27,15 @@ const data = {
   },
   companyInfo: {
     name: "Dr. Khánh Trang's Clinic",
+    url: "/dashboard",
     logo: FaEye,
   },
   navMain: [
+    {
+      title: "Home",
+      url: "/dashboard",
+      icon: Home,
+    },
     {
       title: "Patients",
       url: "/dashboard/patients",
