@@ -1,0 +1,54 @@
+import { Router } from "express";
+import prisma from "../lib/prisma";
+import { Patient } from "../../generated/prisma/client";
+
+const router = Router();
+
+router.post('/', async (req, res) => {
+  const { name, email, gender, yearOfBirth, address } : Patient = req.body;
+  try {
+    const newPatient = await prisma.patient.create({
+      data: {
+        name,
+        email,
+        gender,
+        yearOfBirth,
+        address
+      },
+    });
+    res.status(201).json(newPatient);
+  } catch (error: any) {
+    res.status(400).json({ error: error.message || 'Could not create patient.' });
+  }
+});
+
+router.get('/', async (req, res) => {
+  try {
+    const patients = await prisma.patient.findMany(); //currently get all, maybe add pagination
+    res.status(200).json(patients);
+  } catch (error) {
+    res.status(500).json({ error: 'Could not fetch patients.' });
+  }
+});
+
+router.patch('/:id', async (req, res) => {
+  const { id } = req.params;
+  const { name, email, gender, yearOfBirth, address } : Patient = req.body;
+  try {
+    const updatedPatient = await prisma.patient.update({
+      where: { id },
+      data: {
+        name,
+        email,
+        gender,
+        yearOfBirth,
+        address
+      },
+    });
+    res.status(200).json(updatedPatient);
+  } catch (error: any) {
+    res.status(400).json({ error: error.message || 'Could not update patient.' });
+  }
+});
+
+export default router;
