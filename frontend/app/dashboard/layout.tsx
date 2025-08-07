@@ -1,16 +1,21 @@
 import { AppSidebar } from "@/components/app-sidebar";
 import { Header } from "@/components/header";
-import {
-  SidebarProvider,
-  SidebarInset,
-} from "@/components/ui/sidebar";
+import { SidebarProvider } from "@/components/ui/sidebar";
+import { auth } from "@/lib/auth";
 import { SessionProvider } from "next-auth/react";
+import { redirect } from "next/navigation";
 
-export default function DashboardLayout({
+export default async function DashboardLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  // check session
+  const session = await auth();
+  if (!session || !session.user) {
+    redirect("/api/auth/signin")
+  }
+
   return (
     // The SessionProvider is needed for the AppSidebar
     <SessionProvider>
