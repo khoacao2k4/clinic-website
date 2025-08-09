@@ -34,6 +34,7 @@ import {
 import { createPatient } from "@/lib/api";
 import z from "zod";
 import { useState } from "react";
+import { toast, Toaster } from "sonner";
 
 const formSchema = patientSchema.omit({ id: true });
 
@@ -54,6 +55,7 @@ export function AddPatientModal() {
     setApiError(null);
     try {
       const response = await createPatient(values);
+      toast.success("Patient created successfully!");
       form.reset();
       setModalOpen(false);
       console.log(response);

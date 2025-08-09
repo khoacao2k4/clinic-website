@@ -4,6 +4,7 @@ import { SidebarProvider } from "@/components/ui/sidebar";
 import { auth } from "@/lib/auth";
 import { SessionProvider } from "next-auth/react";
 import { redirect } from "next/navigation";
+import { Toaster } from "sonner";
 
 export default async function DashboardLayout({
   children,
@@ -21,6 +22,7 @@ export default async function DashboardLayout({
     <SessionProvider>
       <SidebarProvider>
         <div className="flex min-h-screen w-full bg-muted/40">
+          <Toaster position="top-center" richColors/>
           <AppSidebar />
           <div className="flex flex-col w-full">
             <Header />
