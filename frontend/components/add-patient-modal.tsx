@@ -31,27 +31,39 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { createPatient } from "@/lib/api";
+import z from "zod";
+import { useState } from "react";
+
+const formSchema = patientSchema.omit({ id: true });
 
 export function AddPatientModal() {
-  const form = useForm<Patient>({
-    resolver: zodResolver(patientSchema),
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
-      email: undefined,
+      phoneNumber: "",
       gender: "Male",
       yearOfBirth: 1900,
-      address: "",
     },
   });
+  const [apiError, setApiError] = useState<string | null>(null);
+  const [modalOpen, setModalOpen] = useState(false);
 
-  function onSubmit(values: Patient) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    setApiError(null);
+    try {
+      const response = await createPatient(values);
+      form.reset();
+      setModalOpen(false);
+      console.log(response);
+    } catch (error) {
+      setApiError(error instanceof Error ? error.message : "An unknown error occurred.");
+    }
   }
 
   return (
-    <Dialog>
+    <Dialog open={modalOpen} onOpenChange={setModalOpen}>
       <DialogTrigger asChild>
         <Button>
           <Plus className="mr-2 h-4 w-4" /> Add New Patient
@@ -61,7 +73,7 @@ export function AddPatientModal() {
         <DialogHeader>
           <DialogTitle>Add New Patient</DialogTitle>
           <DialogDescription>
-            Enter the patient's details below. Click save when you're done.
+            Enter the patient's details below.
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
@@ -81,10 +93,10 @@ export function AddPatientModal() {
             />
             <FormField
               control={form.control}
-              name="email"
+              name="phoneNumber"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Email</FormLabel>
+                  <FormLabel>Phone Number</FormLabel>
                   <FormControl>
                     <Input {...field} />
                   </FormControl>
@@ -130,22 +142,11 @@ export function AddPatientModal() {
                 </FormItem>
               )}
             />
-            <FormField
-              control={form.control}
-              name="address"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Address</FormLabel>
-                  <FormControl>
-                    <Input {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            {apiError && 
+            <p className="text-sm text-destructive text-center">{apiError}</p>}
             <DialogFooter>
-              <Button type="submit">
-                Create Patient
+              <Button type="submit" disabled={form.formState.isSubmitting}>
+                {form.formState.isSubmitting ? 'Saving...' : 'Save Patient'}
               </Button>
             </DialogFooter>
           </form>

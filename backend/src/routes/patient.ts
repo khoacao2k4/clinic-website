@@ -5,15 +5,14 @@ import { Patient } from "../../generated/prisma/client";
 const router = Router();
 
 router.post('/', async (req, res) => {
-  const { name, email, gender, yearOfBirth, address } : Patient = req.body;
+  const { name, phoneNumber, gender, yearOfBirth } : Patient = req.body;
   try {
     const newPatient = await prisma.patient.create({
       data: {
         name,
-        email,
+        phoneNumber,
         gender,
         yearOfBirth,
-        address
       },
     });
     res.status(201).json(newPatient);
@@ -33,16 +32,15 @@ router.get('/', async (req, res) => {
 
 router.patch('/:id', async (req, res) => {
   const { id } = req.params;
-  const { name, email, gender, yearOfBirth, address } : Patient = req.body;
+  const { name, phoneNumber, gender, yearOfBirth } : Patient = req.body;
   try {
     const updatedPatient = await prisma.patient.update({
       where: { id },
       data: {
         name,
-        email,
+        phoneNumber,
         gender,
         yearOfBirth,
-        address
       },
     });
     res.status(200).json(updatedPatient);
