@@ -5,7 +5,7 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { toast } from "sonner";
 import { useState } from "react";
 import { Patient } from "@/utils/patient-schema";
-import { PatientForm, PatientFormValues } from "@/components/patient-form";
+import { PatientForm, PatientFormValues } from "@/components/patient/patient-form";
 import { updatePatient } from "@/lib/api";
 
 export function EditPatientModal({ patient, onUpdated, trigger }: { 

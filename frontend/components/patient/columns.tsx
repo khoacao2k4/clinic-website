@@ -4,9 +4,8 @@ import { ColumnDef } from "@tanstack/react-table";
 import { Checkbox } from "@/components/ui/checkbox";
 import { DataTableColumnHeader } from "@/components/ui/data-table-column-header";
 import { Patient } from "@/utils/patient-schema";
-import { CellAction } from "./cell-action";
 
-export const columns: ColumnDef<Patient>[] = [
+export const baseColumns: ColumnDef<Patient>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -49,9 +48,5 @@ export const columns: ColumnDef<Patient>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Year of Birth" />
     ),
-  },
-  {
-    id: "actions",
-    cell: ({ row }) => <CellAction data={row.original} />,
   },
 ];

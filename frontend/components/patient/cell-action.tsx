@@ -14,17 +14,13 @@ import { EditPatientModal } from "./edit-patient-modal";
 
 interface CellActionProps {
   data: Patient;
+  onUpdated?: () => Promise<void> | void; 
 }
 
-export const CellAction: React.FC<CellActionProps> = ({ data }) => {
+export const CellAction: React.FC<CellActionProps> = ({ data, onUpdated }) => {
   const onDelete = () => {
     // This would typically show a confirmation dialog
     console.log("Deleting patient:", data.name);
-  };
-
-  const onUpdated = async () => {
-    // This would typically trigger a refetch of the data
-    console.log("Patient updated:", data.name);
   };
 
   return (

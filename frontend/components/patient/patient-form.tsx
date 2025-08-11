@@ -21,7 +21,7 @@ import {
 import { patientSchema } from "@/utils/patient-schema";
 import { useForm } from "react-hook-form";
 import z from "zod";
-import { DialogFooter } from "./ui/dialog";
+import { DialogFooter } from "@/components/ui/dialog";
 
 const formSchema = patientSchema.omit({ id: true });
 export type PatientFormValues = z.infer<typeof formSchema>;

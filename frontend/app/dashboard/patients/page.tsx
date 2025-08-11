@@ -1,10 +1,12 @@
 "use client";
 import { DataTable } from "@/components/ui/data-table";
-import { columns } from "@/components/columns";
+import { baseColumns } from "@/components/patient/columns";
 import { Patient } from "@/utils/patient-schema";
-import { AddPatientModal } from "@/components/add-patient-modal";
+import { AddPatientModal } from "@/components/patient/add-patient-modal";
 import { useCallback, useEffect, useState } from "react";
 import { fetchPatients } from "@/lib/api";
+import { CellAction } from "@/components/patient/cell-action";
+import { ColumnDef } from "@tanstack/react-table";
 
 
 export default function PatientsPage() {
@@ -18,6 +20,17 @@ export default function PatientsPage() {
   useEffect(() => { 
     load().catch(console.error); 
   }, [load]);
+
+  const columns: ColumnDef<Patient>[] = [
+    ...baseColumns,
+    {
+      id: "actions",
+      header: "Actions",
+      cell: ({ row }) => (
+        <CellAction data={row.original} onUpdated={load} />
+      ),
+    },
+  ];
 
   return (
     <div className="flex h-[calc(100vh-5rem)] flex-col gap-4 my-auto">

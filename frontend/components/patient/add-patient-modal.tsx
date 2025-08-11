@@ -6,7 +6,7 @@ import { Plus } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 import { createPatient } from "@/lib/api";
-import { PatientForm, PatientFormValues } from "@/components/patient-form";
+import { PatientForm, PatientFormValues } from "@/components/patient/patient-form";
 
 export function AddPatientModal({ onCreated }: { onCreated?: () => Promise<void> | void }) {
   const [apiError, setApiError] = useState<string | null>(null);
