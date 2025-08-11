@@ -23,6 +23,7 @@ router.post('/', async (req, res) => {
 
 router.get('/', async (req, res) => {
   try {
+    console.log('Fetching patients...');
     const patients = await prisma.patient.findMany(); //currently get all, maybe add pagination
     res.status(200).json(patients);
   } catch (error) {

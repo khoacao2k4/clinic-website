@@ -7,14 +7,24 @@ import { useCallback, useEffect, useState } from "react";
 import { fetchPatients } from "@/lib/api";
 import { CellAction } from "@/components/patient/cell-action";
 import { ColumnDef } from "@tanstack/react-table";
+import { Button } from "@/components/ui/button";
+import { RefreshCcw } from "lucide-react";
+import { toast } from "sonner";
 
 
 export default function PatientsPage() {
   const [patients, setPatients] = useState<Patient[]>([]);
 
   const load = useCallback(async () => {
-    const data = await fetchPatients();
-    setPatients(data);
+    try {
+      const data = await fetchPatients();
+      setPatients(data);
+      return true;
+    } catch (error) {
+      toast.error("Failed to fetch patients. Please try again.");
+      console.error(error);
+      return false;
+    }
   }, []);
 
   useEffect(() => { 
@@ -44,7 +54,17 @@ export default function PatientsPage() {
             Manage your patient records 👩‍⚕️
           </p>
         </div>
-        <AddPatientModal onCreated={load} />
+        <div className="flex items-center gap-2">
+          <AddPatientModal onCreated={load} />
+          <Button onClick={async () => {
+            toast.info("Refreshing...");
+            const success = await load();
+            if (!success) return;
+            toast.success("Patients refreshed.");
+          }} size="icon" variant={"outline"}>
+            <RefreshCcw />
+          </Button>
+        </div>
       </div>
       <div className="flex-1 overflow-hidden pb-2">
         <DataTable searchKey="name" columns={columns} data={patients} />

@@ -8,7 +8,7 @@ import { toast } from "sonner";
 import { createPatient } from "@/lib/api";
 import { PatientForm, PatientFormValues } from "@/components/patient/patient-form";
 
-export function AddPatientModal({ onCreated }: { onCreated?: () => Promise<void> | void }) {
+export function AddPatientModal({ onCreated }: { onCreated?: () => Promise<boolean> | boolean }) {
   const [apiError, setApiError] = useState<string | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
 

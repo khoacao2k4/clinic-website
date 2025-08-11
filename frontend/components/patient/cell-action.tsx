@@ -14,7 +14,7 @@ import { EditPatientModal } from "./edit-patient-modal";
 
 interface CellActionProps {
   data: Patient;
-  onUpdated?: () => Promise<void> | void; 
+  onUpdated?: () => Promise<boolean> | boolean; 
 }
 
 export const CellAction: React.FC<CellActionProps> = ({ data, onUpdated }) => {

@@ -10,7 +10,7 @@ import { updatePatient } from "@/lib/api";
 
 export function EditPatientModal({ patient, onUpdated, trigger }: { 
     patient: Patient;
-    onUpdated?: () => Promise<void> | void;
+    onUpdated?: () => Promise<boolean> | boolean;
     trigger?: React.ReactNode;
 }) {
   const [apiError, setApiError] = useState<string | null>(null);
