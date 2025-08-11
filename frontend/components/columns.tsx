@@ -35,12 +35,9 @@ export const columns: ColumnDef<Patient>[] = [
       <DataTableColumnHeader column={column} title="Name" />
     ),
   },
-  {
-    accessorKey: "email",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Email" />
-    ),
-  },
+  { accessorKey: "phoneNumber",
+    header: "Phone", 
+    cell: ({ getValue }) => getValue<string>() ?? "—" },
   {
     accessorKey: "gender",
     header: ({ column }) => (
@@ -48,9 +45,9 @@ export const columns: ColumnDef<Patient>[] = [
     ),
   },
   {
-    accessorKey: "dateOfBirth",
+    accessorKey: "yearOfBirth",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Date of Birth" />
+      <DataTableColumnHeader column={column} title="Year of Birth" />
     ),
   },
   {

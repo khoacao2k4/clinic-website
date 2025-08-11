@@ -10,21 +10,21 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Patient } from "@/utils/patient-schema";
+import { EditPatientModal } from "./edit-patient-modal";
 
 interface CellActionProps {
   data: Patient;
 }
 
 export const CellAction: React.FC<CellActionProps> = ({ data }) => {
-  // These functions will later be connected to your backend API
-  const onEdit = () => {
-    // This would typically open a modal or navigate to an edit page
-    console.log("Editing patient:", data.name);
-  };
-
   const onDelete = () => {
     // This would typically show a confirmation dialog
     console.log("Deleting patient:", data.name);
+  };
+
+  const onUpdated = async () => {
+    // This would typically trigger a refetch of the data
+    console.log("Patient updated:", data.name);
   };
 
   return (
@@ -37,9 +37,18 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuLabel>Actions</DropdownMenuLabel>
-        <DropdownMenuItem onClick={onEdit}>
-          <Pen className="mr-2 h-4 w-4" /> Edit
-        </DropdownMenuItem>
+        <EditPatientModal
+          patient={data}
+          onUpdated={onUpdated}
+          trigger={
+            <DropdownMenuItem
+              // shadcn tip: prevent default so the DialogTrigger can handle it
+              onSelect={(e) => e.preventDefault()}
+            >
+              <Pen className="mr-2 h-4 w-4" /> Edit
+            </DropdownMenuItem>
+          }
+        />
         <DropdownMenuItem onClick={onDelete}>
           <Trash className="mr-2 h-4 w-4" /> Delete
         </DropdownMenuItem>

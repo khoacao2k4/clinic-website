@@ -30,15 +30,16 @@ router.get('/', async (req, res) => {
   }
 });
 
-router.patch('/:id', async (req, res) => {
+router.put('/:id', async (req, res) => {
   const { id } = req.params;
   const { name, phoneNumber, gender, yearOfBirth } : Patient = req.body;
   try {
+    console.log(name, phoneNumber, gender, yearOfBirth)
     const updatedPatient = await prisma.patient.update({
       where: { id },
       data: {
         name,
-        phoneNumber,
+        phoneNumber: phoneNumber ?? null, // set phoneNumber to null if not provided
         gender,
         yearOfBirth,
       },
