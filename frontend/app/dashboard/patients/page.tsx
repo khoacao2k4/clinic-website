@@ -14,6 +14,7 @@ import { toast } from "sonner";
 
 export default function PatientsPage() {
   const [patients, setPatients] = useState<Patient[]>([]);
+  const [refreshing, setRefreshing] = useState(false);
 
   const load = useCallback(async () => {
     try {
@@ -26,6 +27,15 @@ export default function PatientsPage() {
       return false;
     }
   }, []);
+
+  const refresh = useCallback(async () => {
+    if (refreshing) return;
+    setRefreshing(true);
+    const ok = await load();
+    if (ok)
+      toast.success("Patients refreshed.");
+    setRefreshing(false);
+  }, [refreshing, load]);
 
   useEffect(() => { 
     load().catch(console.error); 
@@ -56,13 +66,13 @@ export default function PatientsPage() {
         </div>
         <div className="flex items-center gap-2">
           <AddPatientModal onCreated={load} />
-          <Button onClick={async () => {
-            toast.info("Refreshing...");
-            const success = await load();
-            if (!success) return;
-            toast.success("Patients refreshed.");
-          }} size="icon" variant={"outline"}>
-            <RefreshCcw />
+          <Button
+            onClick={refresh}
+            size="icon"
+            variant="outline"
+            disabled={refreshing}
+          >
+            <RefreshCcw className={refreshing ? "animate-spin" : ""} />
           </Button>
         </div>
       </div>

@@ -24,7 +24,11 @@ router.post('/', async (req, res) => {
 router.get('/', async (req, res) => {
   try {
     console.log('Fetching patients...');
-    const patients = await prisma.patient.findMany(); //currently get all, maybe add pagination
+    const patients = await prisma.patient.findMany({
+      where: {
+        isActive: true,
+      },
+    }); //currently get all, maybe add pagination
     res.status(200).json(patients);
   } catch (error) {
     res.status(500).json({ error: 'Could not fetch patients.' });

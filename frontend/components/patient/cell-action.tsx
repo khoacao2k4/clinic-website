@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Patient } from "@/utils/patient-schema";
 import { EditPatientModal } from "./edit-patient-modal";
+import DeletePatientDialog from "./delete-patient-dialog";
 
 interface CellActionProps {
   data: Patient;
@@ -18,10 +19,6 @@ interface CellActionProps {
 }
 
 export const CellAction: React.FC<CellActionProps> = ({ data, onUpdated }) => {
-  const onDelete = () => {
-    // This would typically show a confirmation dialog
-    console.log("Deleting patient:", data.name);
-  };
 
   return (
     <DropdownMenu>
@@ -37,17 +34,19 @@ export const CellAction: React.FC<CellActionProps> = ({ data, onUpdated }) => {
           patient={data}
           onUpdated={onUpdated}
           trigger={
-            <DropdownMenuItem
-              // shadcn tip: prevent default so the DialogTrigger can handle it
-              onSelect={(e) => e.preventDefault()}
-            >
+            <DropdownMenuItem onSelect={(e) => e.preventDefault()} >
               <Pen className="mr-2 h-4 w-4" /> Edit
             </DropdownMenuItem>
           }
         />
-        <DropdownMenuItem onClick={onDelete}>
-          <Trash className="mr-2 h-4 w-4" /> Delete
-        </DropdownMenuItem>
+        <DeletePatientDialog
+          patient={data}
+          trigger={
+            <DropdownMenuItem onSelect={(e) => e.preventDefault()} >
+              <Trash className="mr-2 h-4 w-4" /> Delete
+            </DropdownMenuItem>
+          }
+        />
       </DropdownMenuContent>
     </DropdownMenu>
   );
