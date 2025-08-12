@@ -1,6 +1,6 @@
 "use client";
 
-import { MoreHorizontal, Pen, Trash } from "lucide-react";
+import { CircleX, MoreHorizontal, Pen } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Patient } from "@/utils/patient-schema";
 import { EditPatientModal } from "./edit-patient-modal";
-import DeletePatientDialog from "./delete-patient-dialog";
+import DeactivatePatientDialog from "./deactivate-patient-dialog";
 
 interface CellActionProps {
   data: Patient;
@@ -35,15 +35,16 @@ export const CellAction: React.FC<CellActionProps> = ({ data, onUpdated }) => {
           onUpdated={onUpdated}
           trigger={
             <DropdownMenuItem onSelect={(e) => e.preventDefault()} >
-              <Pen className="mr-2 h-4 w-4" /> Edit
+              <Pen /> Edit
             </DropdownMenuItem>
           }
         />
-        <DeletePatientDialog
+        <DeactivatePatientDialog
           patient={data}
+          onUpdated={onUpdated}
           trigger={
             <DropdownMenuItem onSelect={(e) => e.preventDefault()} >
-              <Trash className="mr-2 h-4 w-4" /> Delete
+              <CircleX /> Deactivate
             </DropdownMenuItem>
           }
         />

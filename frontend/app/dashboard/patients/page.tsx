@@ -33,7 +33,7 @@ export default function PatientsPage() {
     setRefreshing(true);
     const ok = await load();
     if (ok)
-      toast.success("Patients refreshed.");
+      toast.success("Patients list refreshed.");
     setRefreshing(false);
   }, [refreshing, load]);
 

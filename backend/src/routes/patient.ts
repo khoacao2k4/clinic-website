@@ -37,7 +37,7 @@ router.get('/', async (req, res) => {
 
 router.put('/:id', async (req, res) => {
   const { id } = req.params;
-  const { name, phoneNumber, gender, yearOfBirth } : Patient = req.body;
+  const { name, phoneNumber, gender, yearOfBirth, isActive } : Patient = req.body;
   try {
     const updatedPatient = await prisma.patient.update({
       where: { id },
@@ -46,6 +46,7 @@ router.put('/:id', async (req, res) => {
         phoneNumber: phoneNumber ?? null, // set phoneNumber to null if not provided
         gender,
         yearOfBirth,
+        isActive,
       },
     });
     res.status(200).json(updatedPatient);
