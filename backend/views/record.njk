@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <title>ĐƠN KÍNH</title>
+  <style>
+    /* ---------- Page setup (A5 portrait) ---------- */
+    @page { size: 148mm 210mm; margin: 8mm; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      width: 148mm; min-height: 210mm;
+      background: #fff; color: #262626;
+      font-family: Roboto, system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
+      font-size: 11pt;
+      -webkit-print-color-adjust: exact; print-color-adjust: exact;
+    }
+
+    /* Optional webfonts to match your React-PDF setup */
+    @font-face {
+      font-family: "Roboto";
+      src: url("https://fonts.gstatic.com/s/roboto/v32/KFOmCnqEu92Fr1Me5WZLCzYlKw.ttf") format("truetype");
+      font-weight: 400; font-style: normal;
+    }
+    @font-face {
+      font-family: "Roboto";
+      src: url("https://fonts.gstatic.com/s/roboto/v32/KFOlCnqEu92Fr1MmEU9vAx05IsDqlA.ttf") format("truetype");
+      font-weight: 700; font-style: normal;
+    }
+    @font-face {
+      font-family: "Roboto";
+      src: url("https://fonts.gstatic.com/s/roboto/v32/KFOjCnqEu92Fr1Mu51S7ABc9AMX6lJBP.ttf") format("truetype");
+      font-weight: 700; font-style: italic;
+    }
+
+    .page {
+      box-sizing: border-box;
+      width: calc(148mm - 16mm);       /* page width - margins */
+      min-height: calc(210mm - 16mm);  /* page height - margins */
+      padding: 30px;
+      display: flex; flex-direction: column;
+    }
+
+    /* ---------- Header (no unexpected wraps) ---------- */
+    .header {
+      display: grid;
+      grid-template-columns: 1.25fr 1fr;  /* wider left column to fit EMAIL in one line */
+      gap: 16px;
+      margin-bottom: 40px;
+      align-items: start;
+    }
+    .hdr-line { white-space: nowrap; }   /* keep each header line on one row */
+
+    .text-bold { font-weight: 700; }
+    .text-italic { font-style: italic; }
+    .text-bold-italic { font-weight: 700; font-style: italic; }
+
+    .title {
+      font-size: 20pt;
+      text-align: center;
+      font-weight: 700;
+      margin-bottom: 30px;
+    }
+
+    /* ---------- Patient info (stable, no weird wraps) ---------- */
+    .info {
+      display: grid;
+      grid-template-columns: 1fr;       /* stacked container */
+      gap: 6px;
+      margin-bottom: 20px;
+    }
+    .info-row {
+      display: flex; flex-wrap: wrap; gap: 10px;
+      align-items: baseline;
+    }
+    .name { flex: 1 1 auto; }
+    .nowrap { white-space: nowrap; }
+
+    /* ---------- Vision table (exact 7 equal columns) ---------- */
+    .table-wrap { margin-bottom: 20px; }
+    table { width: 100%; border-collapse: collapse; table-layout: fixed; }
+    thead th, tbody td {
+      border: 1px solid #000; padding: 4px; box-sizing: border-box;
+      text-align: center; vertical-align: middle; white-space: nowrap;
+      overflow: hidden; text-overflow: ellipsis;
+    }
+    /* 7 columns: 1 label + 6 data */
+    col { width: calc(100% / 7); }
+
+    /* ---------- Current glasses + OD/OS ---------- */
+    .glasses { margin-top: 4px; }
+    .od-os { margin-left: 22mm; display: flex; flex-direction: column; }
+
+    /* ---------- Notes + Signature side-by-side ---------- */
+    .row {
+      display: grid; grid-template-columns: 1fr 45mm; gap: 16px;
+      margin-top: 20px; align-items: start;
+      break-inside: avoid; page-break-inside: avoid;
+    }
+    .sig-block { display: flex; flex-direction: column; align-items: center; }
+    .sig-img { width: 100%; height: auto; max-height: 30mm; }
+
+    /* Keep sections from splitting across pages on overflow */
+    .avoid-break { break-inside: avoid; page-break-inside: avoid; }
+  </style>
+  <base href="{{ baseUrl }}/">
+</head>
+<body>
+  <div class="page">
+    <!-- Header -->
+    <div class="header">
+      <div>
+        <div class="hdr-line text-bold-italic">BS HUỲNH KHÁNH TRANG</div>
+        <div class="hdr-line text-bold-italic">CHUYÊN KHOA CẤP 1 MẮT</div>
+        <div class="hdr-line text-bold-italic">ĐTDĐ: {{ phone_number or '0913963003' }}</div>
+        <div class="hdr-line text-bold-italic">EMAIL: {{ email or 'drkhanhtrang.ophth@gmail.com' }}</div>
+      </div>
+      <div>
+        <div class="hdr-line text-bold-italic">ĐỊA CHỈ: 13 Đào Duy Từ P5 Q10</div>
+        <div class="hdr-line text-bold-italic">Giờ khám:</div>
+        <div class="hdr-line text-bold-italic">T2-T7: 17h-19h30</div>
+        <div class="hdr-line text-bold-italic">CN và ngày lễ: Nghỉ</div>
+      </div>
+    </div>
+
+    <!-- Title -->
+    <div class="title">ĐƠN KÍNH</div>
+
+    <!-- Patient info -->
+    <div class="info">
+      <div class="info-row">
+        <div class="name">Họ và tên: {{ name }}</div>
+        <div class="nowrap">Năm sinh: {{ YOB }}</div>
+        <div class="nowrap">
+          Giới tính:
+          {% if gender == 'Male' %}Nam{% elif gender == 'Female' %}Nữ{% else %}Khác{% endif %}
+        </div>
+      </div>
+      <div>Địa chỉ: {{ address }}</div>
+    </div>
+
+    <!-- Vision table -->
+    {% set vision = ['UCVA','SPH','CYL','AX','BCVA','ADD'] %}
+    <div class="table-wrap avoid-break">
+      <table>
+        <colgroup>
+          <col><col><col><col><col><col><col>
+        </colgroup>
+        <thead>
+          <tr>
+            <th></th>
+            {% for item in vision %}<th>{{ item }}</th>{% endfor %}
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>MP/OD</td>
+            {% for item in vision %}<td>{{ MP[item] }}</td>{% endfor %}
+          </tr>
+          <tr>
+            <td>MT/OS</td>
+            {% for item in vision %}<td>{{ MT[item] }}</td>{% endfor %}
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Current glasses + OD/OS -->
+    <div class="glasses">
+      <div>CURRENT GLASSES: {{ current_glasses }}</div>
+      <div class="od-os">
+        <div>OD: {{ right_eye }}</div>
+        <div>OS: {{ left_eye }}</div>
+      </div>
+    </div>
+
+    <!-- Notes + Signature -->
+    <div class="row">
+      <div class="notes">
+        <div>Ghi chú:</div>
+        <div>- Hạn chế sử dụng vi tính, điện thoại</div>
+        <div>- Tăng cường chơi thể thao ngoài trời</div>
+        <div>- Đeo kính thường xuyên</div>
+        <div>- Tái khám sau {{ reassessmentTime }} THÁNG</div>
+        <div>- Đem theo toa cũ khi tái khám.</div>
+      </div>
+      <div class="sig-block">
+        <div style="text-align:center">Ký tên</div>
+        <img class="sig-img" src="/signature.png" alt="Chữ ký" />
+        <div style="text-align:center">BS HUỲNH KHÁNH TRANG</div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
