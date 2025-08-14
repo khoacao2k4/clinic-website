@@ -5,6 +5,7 @@ import cors from 'cors';
 import patientRouter from './routes/patient';
 import nunjucks from "nunjucks";
 import { chromium, Browser } from "@playwright/test";
+import { presignGet, uploadPdf } from "./lib/s3";
 
 dotenv.config();
 
@@ -28,7 +29,7 @@ async function getBrowser() {
 }
 
 const MOCK_DATA = {
-  "name": "Trần Văn HuY",
+  "name": "test 1",
   "YOB": "2008",
   "gender": "Male",
   "address": "13 Đào Duy Từ, P5, Q10, TP.HCM",
@@ -80,14 +81,11 @@ app.get("/test-pdf", async (req, res, next) => {
     });
     await page.close();
 
-    const filename = "test.pdf";
-
-    res
-      .set({
-        "Content-Type": "application/pdf",
-        "Content-Disposition": `attachment; filename="${filename}"`
-      })
-      .send(pdf);
+    const safeName = (name || "patient").toString().replace(/\s+/g, "_");
+    const key = `records/${safeName}/${Date.now()}.pdf`;
+    await uploadPdf(process.env.S3_BUCKET!, key, pdf);
+    const url = await presignGet(process.env.S3_BUCKET!, key, `${safeName}.pdf`);
+    res.status(200).json({ key, url });
   } catch (err) {
     next(err);
   }
