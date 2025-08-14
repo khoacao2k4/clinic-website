@@ -28,29 +28,29 @@ async function getBrowser() {
 }
 
 const MOCK_DATA = {
-  "name": "Trần Văn Huy",
+  "name": "Trần Văn HuY",
   "YOB": "2008",
   "gender": "Male",
   "address": "13 Đào Duy Từ, P5, Q10, TP.HCM",
   "MP": {
-    "UCVA": "6/18",
-    "SPH": "-2.00",
-    "CYL": "-0.50",
-    "AX": "180",
-    "BCVA": "6/6",
-    "ADD": "+0.00"
+    "UCVA": "mẹ điền",
+    "SPH": "mẹ điền",
+    "CYL": "mẹ điền",
+    "AX": "mẹ điền",
+    "BCVA": "mẹ điền",
+    "ADD": "mẹ điền"
   },
   "MT": {
-    "UCVA": "6/12",
-    "SPH": "-1.75",
-    "CYL": "-0.50",
-    "AX": "170",
-    "BCVA": "6/6",
-    "ADD": "+0.00"
+    "UCVA": "mẹ điền",
+    "SPH": "mẹ điền",
+    "CYL": "mẹ điền",
+    "AX": "mẹ điền",
+    "BCVA": "mẹ điền",
+    "ADD": "mẹ điền"
   },
-  "current_glasses": "Single vision, polycarbonate, AR coating",
-  "right_eye": "SPH -2.00 CYL -0.50 AX 180",
-  "left_eye": "SPH -1.75 CYL -0.50 AX 170",
+  "current_glasses": "mẹ điền",
+  "right_eye": "mẹ điền",
+  "left_eye": "mẹ điền",
   "reassessmentTime": "3"
 }
 

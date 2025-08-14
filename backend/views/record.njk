@@ -10,34 +10,25 @@
     body {
       width: 148mm; min-height: 210mm;
       background: #fff; color: #262626;
-      font-family: Roboto, system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
+      font-family: Times New Roman, system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
       font-size: 11pt;
       -webkit-print-color-adjust: exact; print-color-adjust: exact;
     }
 
     /* Optional webfonts to match your React-PDF setup */
-    @font-face {
-      font-family: "Roboto";
-      src: url("https://fonts.gstatic.com/s/roboto/v32/KFOmCnqEu92Fr1Me5WZLCzYlKw.ttf") format("truetype");
-      font-weight: 400; font-style: normal;
-    }
-    @font-face {
-      font-family: "Roboto";
-      src: url("https://fonts.gstatic.com/s/roboto/v32/KFOlCnqEu92Fr1MmEU9vAx05IsDqlA.ttf") format("truetype");
-      font-weight: 700; font-style: normal;
-    }
-    @font-face {
-      font-family: "Roboto";
-      src: url("https://fonts.gstatic.com/s/roboto/v32/KFOjCnqEu92Fr1Mu51S7ABc9AMX6lJBP.ttf") format("truetype");
-      font-weight: 700; font-style: italic;
-    }
+    @import url('https://fonts.cdnfonts.com/css/times-new-roman');
 
     .page {
-      box-sizing: border-box;
-      width: calc(148mm - 16mm);       /* page width - margins */
-      min-height: calc(210mm - 16mm);  /* page height - margins */
-      padding: 30px;
-      display: flex; flex-direction: column;
+        box-sizing: border-box;
+        width: calc(148mm - 16mm);             /* page width - margins */
+        height: calc(210mm - 16mm);            /* fixed inner height so grid can distribute space */
+        padding: 30px;
+
+        /* switch from flex to grid for vertical distribution */
+        display: grid;
+        grid-template-rows: auto 1fr auto;     /* top | middle (flexible) | bottom */
+        row-gap: 8mm;                          /* vertical rhythm between bands */
+        background: #fff;
     }
 
     /* ---------- Header (no unexpected wraps) ---------- */
@@ -88,40 +79,50 @@
 
     /* ---------- Current glasses + OD/OS ---------- */
     .glasses { margin-top: 4px; }
-    .od-os { margin-left: 22mm; display: flex; flex-direction: column; }
+    .od-os { margin-left: 8mm; display: flex; flex-direction: column; }
 
     /* ---------- Notes + Signature side-by-side ---------- */
     .row {
-      display: grid; grid-template-columns: 1fr 45mm; gap: 16px;
-      margin-top: 20px; align-items: start;
+      display: grid;
+      grid-template-columns: 1fr 58mm;  /* was 45mm */
+      gap: 16px;
+      margin-top: 20px;
+      align-items: start;
       break-inside: avoid; page-break-inside: avoid;
     }
     .sig-block { display: flex; flex-direction: column; align-items: center; }
-    .sig-img { width: 100%; height: auto; max-height: 30mm; }
+    .sig-img {
+      width: 100%;
+      height: auto;
+      max-height: 30mm;
+    }
 
     /* Keep sections from splitting across pages on overflow */
     .avoid-break { break-inside: avoid; page-break-inside: avoid; }
+
+    .band-top, .band-middle, .band-bottom { break-inside: avoid; page-break-inside: avoid; }
+    .band-middle { display: grid; align-content: center; row-gap: 6mm; }
   </style>
   <base href="{{ baseUrl }}/">
 </head>
 <body>
   <div class="page">
     <!-- Header -->
-    <div class="header">
-      <div>
-        <div class="hdr-line text-bold-italic">BS HUỲNH KHÁNH TRANG</div>
-        <div class="hdr-line text-bold-italic">CHUYÊN KHOA CẤP 1 MẮT</div>
-        <div class="hdr-line text-bold-italic">ĐTDĐ: {{ phone_number or '0913963003' }}</div>
-        <div class="hdr-line text-bold-italic">EMAIL: {{ email or 'drkhanhtrang.ophth@gmail.com' }}</div>
-      </div>
-      <div>
-        <div class="hdr-line text-bold-italic">ĐỊA CHỈ: 13 Đào Duy Từ P5 Q10</div>
-        <div class="hdr-line text-bold-italic">Giờ khám:</div>
-        <div class="hdr-line text-bold-italic">T2-T7: 17h-19h30</div>
-        <div class="hdr-line text-bold-italic">CN và ngày lễ: Nghỉ</div>
-      </div>
-    </div>
-
+    <div class="band-top">
+        <div class="header">
+        <div>
+            <div class="hdr-line text-bold-italic">BS HUỲNH KHÁNH TRANG</div>
+            <div class="hdr-line text-bold-italic">CHUYÊN KHOA CẤP 1 MẮT</div>
+            <div class="hdr-line text-bold-italic">ĐTDĐ: {{ phone_number or '0913963003' }}</div>
+            <div class="hdr-line text-bold-italic">EMAIL: {{ email or 'drkhanhtrang.ophth@gmail.com' }}</div>
+        </div>
+        <div>
+            <div class="hdr-line text-bold-italic">ĐỊA CHỈ: 13 Đào Duy Từ P5 Q10</div>
+            <div class="hdr-line text-bold-italic">Giờ khám:</div>
+            <div class="hdr-line text-bold-italic">T2-T7: 17h30-19h30</div>
+            <div class="hdr-line text-bold-italic">CN và ngày lễ: Nghỉ</div>
+        </div>
+        </div>
     <!-- Title -->
     <div class="title">ĐƠN KÍNH</div>
 
@@ -135,11 +136,12 @@
           {% if gender == 'Male' %}Nam{% elif gender == 'Female' %}Nữ{% else %}Khác{% endif %}
         </div>
       </div>
-      <div>Địa chỉ: {{ address }}</div>
+    </div>
     </div>
 
     <!-- Vision table -->
     {% set vision = ['UCVA','SPH','CYL','AX','BCVA','ADD'] %}
+    <div class="band-middle">
     <div class="table-wrap avoid-break">
       <table>
         <colgroup>
@@ -166,14 +168,23 @@
 
     <!-- Current glasses + OD/OS -->
     <div class="glasses">
-      <div>CURRENT GLASSES: {{ current_glasses }}</div>
+      <div>Kính cũ: {{ current_glasses }}</div>
       <div class="od-os">
         <div>OD: {{ right_eye }}</div>
         <div>OS: {{ left_eye }}</div>
       </div>
     </div>
+    <div class="glasses">
+      <div>Kính đề nghị: {{ current_glasses }}</div>
+      <div class="od-os">
+        <div>OD: {{ right_eye }}</div>
+        <div>OS: {{ left_eye }}</div>
+      </div>
+    </div>
+    </div>
 
     <!-- Notes + Signature -->
+    <div class="band-bottom">
     <div class="row">
       <div class="notes">
         <div>Ghi chú:</div>
@@ -184,10 +195,12 @@
         <div>- Đem theo toa cũ khi tái khám.</div>
       </div>
       <div class="sig-block">
-        <div style="text-align:center">Ký tên</div>
-        <img class="sig-img" src="/signature.png" alt="Chữ ký" />
-        <div style="text-align:center">BS HUỲNH KHÁNH TRANG</div>
+        <div style="text-align:center" class="text-bold">19/05/2004</div>
+        <div style="text-align:center" class="text-bold-italic">Ký tên</div>
+        <img class="sig-img" src="{{ baseUrl }}/signature.png" alt="Chữ ký" />
+        <div>BS HUỲNH KHÁNH TRANG</div>
       </div>
+    </div>
     </div>
   </div>
 </body>
