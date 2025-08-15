@@ -73,12 +73,12 @@ router.get("/:id", async (req, res) => {
       select: {
         id: true,
         name: true,
+        gender: true,
         phoneNumber: true,
         yearOfBirth: true,
         isActive: true,
         ...(includeRecords ? {
           records: {
-            where: { isActive: true },
             orderBy: { visitDate: "desc" },
             select: { id: true, visitDate: true },
           },
