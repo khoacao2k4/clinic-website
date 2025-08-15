@@ -4,8 +4,9 @@ import { Patient } from "../../generated/prisma/client";
 
 const router = Router();
 
-router.post('/', async (req, res) => {
-  const { name, phoneNumber, gender, yearOfBirth } : Patient = req.body;
+// Create a new patient
+router.post("/", async (req, res) => {
+  const { name, phoneNumber, gender, yearOfBirth }: Patient = req.body;
   try {
     const newPatient = await prisma.patient.create({
       data: {
@@ -14,30 +15,36 @@ router.post('/', async (req, res) => {
         gender,
         yearOfBirth,
       },
+      select: { id: true, name: true, phoneNumber: true, gender: true, yearOfBirth: true, isActive: true },
     });
     res.status(201).json(newPatient);
   } catch (error: any) {
-    res.status(400).json({ error: error.message || 'Could not create patient.' });
+    res.status(400).json({ error: error.message || "Could not create patient." });
   }
 });
 
-router.get('/', async (req, res) => {
+// Get all patients
+router.get("/", async (req, res) => {
   try {
-    console.log('Fetching patients...');
     const patients = await prisma.patient.findMany({
       where: {
         isActive: true,
       },
+      orderBy: {
+        createdAt: "desc",
+      },
+      select: { id: true, name: true, phoneNumber: true, gender: true, yearOfBirth: true },
     }); //currently get all, maybe add pagination
     res.status(200).json(patients);
   } catch (error) {
-    res.status(500).json({ error: 'Could not fetch patients.' });
+    res.status(500).json({ error: "Could not fetch patients." });
   }
 });
 
-router.put('/:id', async (req, res) => {
+// Update a patient's information
+router.put("/:id", async (req, res) => {
   const { id } = req.params;
-  const { name, phoneNumber, gender, yearOfBirth, isActive } : Patient = req.body;
+  const { name, phoneNumber, gender, yearOfBirth, isActive }: Patient = req.body;
   try {
     const updatedPatient = await prisma.patient.update({
       where: { id },
@@ -48,10 +55,44 @@ router.put('/:id', async (req, res) => {
         yearOfBirth,
         isActive,
       },
+      select: { id: true, name: true, phoneNumber: true, gender: true, yearOfBirth: true, isActive: true },
     });
     res.status(200).json(updatedPatient);
   } catch (error: any) {
-    res.status(400).json({ error: error.message || 'Could not update patient.' });
+    res.status(400).json({ error: error.message || "Could not update patient." });
+  }
+});
+
+// Get a specific patient information (records included)
+router.get("/:id", async (req, res) => {
+  const { id } = req.params;
+  const includeRecords = req.query.include === "records";
+  try {
+    const patientInfo = await prisma.patient.findUnique({
+      where: { id },
+      select: {
+        id: true,
+        name: true,
+        phoneNumber: true,
+        yearOfBirth: true,
+        isActive: true,
+        ...(includeRecords ? {
+          records: {
+            where: { isActive: true },
+            orderBy: { visitDate: "desc" },
+            select: { id: true, visitDate: true },
+          },
+        } : {}),
+      },
+    });
+    
+    if (!patientInfo || !patientInfo.isActive) {
+      res.status(404).json({ error: "Patient not found." });
+    } else {
+      res.status(200).json(patientInfo);
+    }
+  } catch (error) {
+    res.status(500).json({ error: "Could not fetch patient." });
   }
 });
 

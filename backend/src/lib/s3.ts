@@ -17,12 +17,11 @@ export async function uploadPdf(bucket: string, key: string, body: Buffer) {
   }));
 }
 
-export async function presignGet(bucket: string, key: string, filename: string, ttl = 300) {
+export async function presignGet(bucket: string, key: string, ttl = 300) {
   const cmd = new GetObjectCommand({
     Bucket: bucket,
     Key: key,
-    ResponseContentType: "application/pdf",
-    ResponseContentDisposition: `attachment; filename="${filename}"`
+    ResponseContentType: "application/pdf"
   });
   return getSignedUrl(s3, cmd, { expiresIn: ttl });
 }

@@ -15,12 +15,32 @@ datasource db {
 }
 
 model Patient {
-  id          String   @id @default(cuid())
+  id          String        @id @default(cuid())
   name        String
   phoneNumber String?
   gender      String
   yearOfBirth Int
-  isActive    Boolean @default(true)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  isActive    Boolean       @default(true)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  records     VisitRecord[]
+
+  @@unique([name, yearOfBirth])
+  @@index([name, yearOfBirth])
+}
+
+model VisitRecord {
+  id         String   @id @default(cuid())
+  patientId  String
+  visitDate  DateTime
+  filledInfo Json?
+  isActive   Boolean  @default(true)
+
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  patient    Patient @relation(fields: [patientId], references: [id], onDelete: Cascade)
+
+  @@unique([patientId, visitDate])
+  @@index([patientId, visitDate])
 }
