@@ -26,6 +26,7 @@ router.post("/", async (req, res) => {
 // Get all patients
 router.get("/", async (req, res) => {
   try {
+    console.log("get all patients")
     const patients = await prisma.patient.findMany({
       where: {
         isActive: true,
@@ -65,6 +66,7 @@ router.put("/:id", async (req, res) => {
 
 // Get a specific patient information (records included)
 router.get("/:id", async (req, res) => {
+  console.log("get patient info")
   const { id } = req.params;
   const includeRecords = req.query.include === "records";
   try {

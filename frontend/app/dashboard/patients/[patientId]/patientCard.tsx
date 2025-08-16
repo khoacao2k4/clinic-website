@@ -1,19 +1,75 @@
+"use client";
+import Link from "next/link";
+import { useQuery } from "@tanstack/react-query";
+import { ArrowLeft, CalendarDays, Clock, User2 } from "lucide-react";
+
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
+import { fetchPatientDetails } from "@/lib/api";
 import { Patient } from "@/utils/patient-schema";
-import { ArrowLeft, CalendarDays, Clock, User2 } from "lucide-react";
-import Link from "next/link";
-import React from "react";
 
-const patientCard = ({
-  patient,
-  totalVisits,
-  lastVisit,
-}: {
-  patient: Patient;
-  totalVisits: number;
-  lastVisit: string;
-}) => {
+const PatientSkeleton = () => (
+  <div className="space-y-4">
+    <Button asChild variant="ghost" size="sm" className="-ml-2">
+      <Link href="/dashboard/patients">
+        <ArrowLeft className="mr-2 h-4 w-4" />
+        Back
+      </Link>
+    </Button>
+
+    <Card>
+      <CardHeader className="flex flex-col items-center text-center">
+        <Skeleton className="h-16 w-16 rounded-full" />
+        <CardTitle className="mt-3">
+          <Skeleton className="h-6 w-40" />
+        </CardTitle>
+        <div className="mt-1 space-y-1 text-sm text-muted-foreground">
+          <Skeleton className="h-4 w-36" />
+          <Skeleton className="h-4 w-32" />
+          <Skeleton className="h-4 w-28" />
+        </div>
+      </CardHeader>
+    </Card>
+  </div>
+);
+
+export default function PatientCard({ patientId }: { patientId: string }) {
+  const patientQ = useQuery({
+    queryKey: ["patient", patientId],
+    queryFn: () => fetchPatientDetails(patientId),
+    retry: 1,
+    staleTime: 60 * 1000, // 1 minute
+  });
+
+  if (patientQ.isLoading) {
+    return (
+      <PatientSkeleton />
+    )
+  }
+
+  if (patientQ.isError) {
+    throw patientQ.error;
+  }
+
+  if (!patientQ.data) {
+    return (
+      <div className="p-6 text-sm text-muted-foreground">
+        No patient details found.
+      </div>
+    );
+  }
+
+  const { records, ...patient } = patientQ.data as Patient & {
+    records: { visitDate: string }[];
+  };
+
+  const totalVisits = records?.length ?? 0;
+  const lastVisit =
+    totalVisits > 0
+      ? new Date(records[0].visitDate).toLocaleDateString("en-GB")
+      : "—";
+
   return (
     <div className="space-y-4">
       <Button asChild variant="ghost" size="sm" className="-ml-2">
@@ -30,9 +86,9 @@ const patientCard = ({
           </div>
           <CardTitle className="mt-3">{patient.name}</CardTitle>
           <div className="mt-1 text-sm text-muted-foreground">
-            Phone: {patient?.phoneNumber ?? "—"} <br />
-            Gender: {patient?.gender ?? "—"} <br />
-            Year of Birth: {patient?.yearOfBirth ?? "—"}
+            Phone: {patient.phoneNumber ?? "—"} <br />
+            Gender: {patient.gender ?? "—"} <br />
+            Year of Birth: {patient.yearOfBirth ?? "—"}
           </div>
         </CardHeader>
         <CardContent className="mt-4 space-y-2 text-sm">
@@ -48,6 +104,4 @@ const patientCard = ({
       </Card>
     </div>
   );
-};
-
-export default patientCard;
+}
