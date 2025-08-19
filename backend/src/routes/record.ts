@@ -21,6 +21,10 @@ router.post("/", async (req, res) => {
     });
     res.status(201).json(newVisitRecord);
   } catch (error: any) {
+    // date-userId exists in database
+    if (error.code === "P2002") {
+      res.status(400).json({ error: "Visit record already exists." });
+    }
     res.status(400).json({ error: error.message || "Could not create visit record." });
   }
 });
