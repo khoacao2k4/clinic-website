@@ -1,10 +1,6 @@
-import { notFound } from "next/navigation";
-import { Suspense } from "react";
-import PatientCard from "./patientCard"; // client or server (no hooks => server)
-import Toolbar from "./toolbar"; // client (date-range + new record)
-import RecordsTable from "./_ui/records-table"; // client (actions, delete)
-import { cookies, headers } from "next/headers";
-import { fetchPatientDetails } from "@/lib/api";
+import PatientCard from "./patientCard";
+import Toolbar from "./toolbar";
+import RecordsPanel from "./recordPanel";
 
 export default async function Page({
   params,
@@ -15,12 +11,13 @@ export default async function Page({
 }) {
   return (
     <div className="max-w-6xl px-4 py-6">
-      <div className="grid gap-6 lg:grid-cols-[300px_1fr]">
+      <div className="grid gap-6 min-[1110px]:grid-cols-[300px_1fr]">
         <PatientCard
           patientId={params.patientId}
         />
         <div className="flex flex-col gap-4">
-        <Toolbar patientId={params.patientId} />
+          <Toolbar patientId={params.patientId} />
+          <RecordsPanel patientId={params.patientId} />
         </div>
       </div>
     </div>

@@ -42,6 +42,7 @@ router.get("/patient/:patientId", async (req, res) => {
           lte: to ? new Date(to as string) : undefined,
         },
       },
+      orderBy: { visitDate: "desc" },
       select: { id: true, visitDate: true },
     });
     res.status(200).json(visitRecords);
