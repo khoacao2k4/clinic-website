@@ -28,9 +28,16 @@ router.post("/", async (req, res) => {
 // Get all visit records for a patient
 router.get("/patient/:patientId", async (req, res) => {
   const { patientId } = req.params;
+  const { from, to } = req.query;
   try {
     const visitRecords = await prisma.visitRecord.findMany({
-      where: { patientId },
+      where: { 
+        patientId,
+        visitDate: {
+          gte: from ? new Date(from as string) : undefined,
+          lte: to ? new Date(to as string) : undefined,
+        },
+      },
       select: { id: true, visitDate: true },
     });
     res.status(200).json(visitRecords);

@@ -32,7 +32,7 @@ model Patient {
 model VisitRecord {
   id         String   @id @default(cuid())
   patientId  String
-  visitDate  DateTime
+  visitDate  DateTime @db.Date
   filledInfo Json?
 
   createdAt  DateTime @default(now())
