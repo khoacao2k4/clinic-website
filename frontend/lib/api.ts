@@ -38,12 +38,15 @@ export const updatePatient = async (id: string, values: any) => {
 
 // --- Patients
 export async function fetchPatientDetails(patientId: string) {
-  const response = await fetch(`${API_URL}/api/patient/${patientId}?include=records`);
+  try {
+    const response = await fetch(`${API_URL}/api/patient/${patientId}?summary=true`);
 
-  if (!response.ok) 
+    if (!response.ok) 
+      throw new Error("Internal server error. Please try again.");
+    return response.json();
+  } catch (error) {
     throw new Error("Failed to fetch patient. Please try again.");
-
-  return response.json();
+  }
 }
 
 export async function fetchRecordsByPatient(patientId: string, fromDate: string, toDate: string) {

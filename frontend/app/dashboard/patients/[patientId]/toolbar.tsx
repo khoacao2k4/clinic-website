@@ -1,6 +1,3 @@
-"use client";
-
-import { useRouter, useSearchParams } from "next/navigation";
 import NewRecordDialog from "@/components/record/new-record-dialog";
 import CalendarPicker from "@/components/record/calendar";
 
