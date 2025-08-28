@@ -66,11 +66,10 @@ router.put("/:id", async (req, res) => {
 
 // Get a specific patient information (records included)
 router.get("/:id", async (req, res) => {
-  console.log("get patient info")
   const { id } = req.params;
-  const includeRecords = req.query.include === "records";
+  const includeSummary = req.query.summary === "true"; // ?summary=true
   try {
-    const patientInfo = await prisma.patient.findUnique({
+    const data = await prisma.patient.findUnique({
       where: { id },
       select: {
         id: true,
@@ -79,18 +78,36 @@ router.get("/:id", async (req, res) => {
         phoneNumber: true,
         yearOfBirth: true,
         isActive: true,
-        ...(includeRecords ? {
-          records: {
-            orderBy: { visitDate: "desc" },
-            select: { id: true, visitDate: true },
-          },
-        } : {}),
+        ...(includeSummary
+        ? {
+            _count: { select: { records: true } }, // number of records
+            records: {
+              orderBy: { visitDate: "desc" },
+              take: 1, // only the latest record
+              select: { visitDate: true },
+            },
+          }
+        : {}),
       },
     });
     
-    if (!patientInfo || !patientInfo.isActive) {
+    if (!data || !data.isActive) {
       res.status(404).json({ error: "Patient not found." });
     } else {
+      const patientInfo = {
+        id: data.id,
+        name: data.name,
+        gender: data.gender,
+        phoneNumber: data.phoneNumber,
+        yearOfBirth: data.yearOfBirth,
+        isActive: data.isActive,
+        ...(includeSummary
+        ? {
+            recordCount: data._count.records,
+            latestVisitDate: data.records[0]?.visitDate ?? null,
+          }
+        : {}),
+       };
       res.status(200).json(patientInfo);
     }
   } catch (error) {

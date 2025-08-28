@@ -8,6 +8,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { fetchPatientDetails } from "@/lib/api";
 import { Patient } from "@/utils/patient-schema";
+import { getDateFromString } from "@/lib/utils";
 
 const PatientSkeleton = () => (
   <div className="space-y-4">
@@ -47,28 +48,18 @@ export default function PatientCard({ patientId }: { patientId: string }) {
       <PatientSkeleton />
     )
   }
-
   if (patientQ.isError) {
     throw patientQ.error;
   }
-
   if (!patientQ.data) {
-    return (
-      <div className="p-6 text-sm text-muted-foreground">
-        No patient details found.
-      </div>
-    );
+    throw new Error("Patient not found.");
   }
 
-  const { records, ...patient } = patientQ.data as Patient & {
-    records: { visitDate: string }[];
+  const patient = patientQ.data as Patient & {
+    recordCount?: number;
+    latestVisitDate?: string;
   };
-
-  const totalVisits = records?.length ?? 0;
-  const lastVisit =
-    totalVisits > 0
-      ? new Date(records[0].visitDate).toLocaleDateString("en-GB")
-      : "—";
+  const lastVisit = patient.latestVisitDate ? getDateFromString(patient.latestVisitDate) : "—";
 
   return (
     <div className="space-y-4">
@@ -94,7 +85,7 @@ export default function PatientCard({ patientId }: { patientId: string }) {
         <CardContent className="mt-4 space-y-2 text-sm">
           <div className="flex items-center gap-2">
             <CalendarDays className="h-4 w-4 text-muted-foreground" />
-            Total visits: {totalVisits}
+            Total visits: {patient.recordCount ?? 0}
           </div>
           <div className="flex items-center gap-2">
             <Clock className="h-4 w-4 text-muted-foreground" />
