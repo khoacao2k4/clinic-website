@@ -25,7 +25,7 @@ export default function RecordsPanel({ patientId }: { patientId: string }) {
         patientId={patientId}
         records={recordsQ.data as VisitRecord[] || []}
         loading={recordsQ.isLoading}
-        onDeleted={() => recordsQ.refetch()}
+        refetchRecords={() => recordsQ.refetch()}
       />
     </Card>
   );

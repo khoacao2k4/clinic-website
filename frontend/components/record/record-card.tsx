@@ -9,13 +9,17 @@ import {
 import { Button } from "../ui/button";
 import { MoreHorizontal } from "lucide-react";
 import { redirect, RedirectType } from "next/navigation";
+import { deleteRecord } from "@/lib/api";
+import { toast } from "sonner";
 
 const RecordCard = ({
   record,
   patientId,
+  onDeleted,
 }: {
   record: VisitRecord;
   patientId: string;
+  onDeleted: () => void;
 }) => {
   const dateStr = new Date(record.visitDate).toLocaleDateString("en-GB", {
     timeZone: "UTC",
@@ -41,9 +45,7 @@ const RecordCard = ({
                       bg-primary/80 group-hover:bg-primary"
       />
       <div className="min-w-0 flex-1">
-        <div className="truncate text-[15px] font-medium tracking-tight">
-          {dateStr}
-        </div>
+        <div className="truncate text-[15px] font-medium tracking-tight"> {dateStr} </div>
         <div className="mt-1 text-xs text-muted-foreground">Visit record</div>
       </div>
 
@@ -71,13 +73,13 @@ const RecordCard = ({
             <DropdownMenuItem
               className="text-red-600"
               onClick={async () => {
-                // try {
-                //   await deleteRecord(r.id);
-                //   toast.success("Record deleted");
-                //   onDeleted();
-                // } catch (e: any) {
-                //   toast.error(e?.message || "Failed to delete");
-                // }
+                try {
+                  await deleteRecord(record.id);
+                  toast.success("Record deleted");
+                  onDeleted();
+                } catch (e: any) {
+                  toast.error(e?.message || "Failed to delete");
+                }
               }}
             >
               Delete

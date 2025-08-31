@@ -78,6 +78,7 @@ router.get("/:recordId", async (req, res) => {
   }
 });
 
+// Delete a visit record
 router.delete("/:recordId", async (req, res) => {
   const { recordId } = req.params;
   try {

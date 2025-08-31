@@ -22,10 +22,10 @@ const VisitRecordPlaceholder = () => (
   </>
 );
 
-export default function RecordGrid({ patientId, records, onDeleted, loading = false, pageSizeDefault = 10 }: {
+export default function RecordGrid({ patientId, records, refetchRecords, loading = false, pageSizeDefault = 10 }: {
   patientId: string;
   records: VisitRecord[];
-  onDeleted: () => void;
+  refetchRecords: () => void;
   loading?: boolean;
   pageSizeDefault?: number;
 }) {
@@ -57,6 +57,7 @@ export default function RecordGrid({ patientId, records, onDeleted, loading = fa
               key={record.id}
               patientId={patientId}
               record={record}
+              onDeleted={refetchRecords}
             />
           ))}
 

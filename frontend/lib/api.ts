@@ -68,6 +68,13 @@ export async function createRecord(input: { patientId: string; visitDate: string
 }
 
 export async function deleteRecord(recordId: string): Promise<void> {
-  const res = await fetch(`${API_URL}/api/record/${recordId}`, { method: "DELETE" });
-  if (!res.ok) throw new Error(await res.text());
+  try {
+    const response = await fetch(`${API_URL}/api/record/${recordId}`, { method: "DELETE" });
+
+    if (!response.ok) 
+      throw new Error("Internal server error. Please try again.");
+    return response.json();
+  } catch (error) {
+    throw new Error("Failed to delete record. Please try again.");
+  }
 }
