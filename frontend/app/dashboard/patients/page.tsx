@@ -1,7 +1,7 @@
 "use client";
 import { DataTable } from "@/components/ui/data-table";
 import { baseColumns } from "@/components/patient/columns";
-import { Patient } from "@/utils/patient-schema";
+import { Patient } from "@/utils/db-schema";
 import { AddPatientModal } from "@/components/patient/add-patient-modal";
 import { useCallback, useEffect, useState } from "react";
 import { fetchPatients } from "@/lib/api";

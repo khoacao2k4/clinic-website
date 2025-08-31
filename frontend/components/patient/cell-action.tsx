@@ -9,7 +9,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Patient } from "@/utils/patient-schema";
+import { Patient } from "@/utils/db-schema";
 import { EditPatientModal } from "./edit-patient-modal";
 import DeactivatePatientDialog from "./deactivate-patient-dialog";
 

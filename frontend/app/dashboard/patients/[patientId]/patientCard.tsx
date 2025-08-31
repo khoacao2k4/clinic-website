@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { fetchPatientDetails } from "@/lib/api";
-import { Patient } from "@/utils/patient-schema";
+import { Patient } from "@/utils/db-schema";
 import { getDateFromString } from "@/lib/utils";
 
 const PatientSkeleton = () => (

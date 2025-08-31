@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { toast } from "sonner";
 import { useState } from "react";
-import { Patient } from "@/utils/patient-schema";
+import { Patient } from "@/utils/db-schema";
 import { PatientForm, PatientFormValues } from "@/components/patient/patient-form";
 import { updatePatient } from "@/lib/api";
 

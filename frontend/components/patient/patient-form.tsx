@@ -18,7 +18,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { patientSchema } from "@/utils/patient-schema";
+import { patientSchema } from "@/utils/db-schema";
 import { useForm } from "react-hook-form";
 import z from "zod";
 import { DialogFooter } from "@/components/ui/dialog";
