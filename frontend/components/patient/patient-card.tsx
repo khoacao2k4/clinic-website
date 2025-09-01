@@ -12,7 +12,7 @@ import { getDateFromString } from "@/lib/utils";
 
 const PatientSkeleton = () => (
   <div className="space-y-4">
-    <Button asChild variant="ghost" size="sm" className="-ml-2">
+    <Button asChild variant="outline">
       <Link href="/dashboard/patients">
         <ArrowLeft className="mr-2 h-4 w-4" />
         Back
@@ -41,9 +41,10 @@ export default function PatientCard({ patientId }: { patientId: string }) {
     queryFn: () => fetchPatientDetails(patientId),
     retry: 1,
     staleTime: 60 * 1000, // 1 minute
+    enabled: !!patientId,
   });
 
-  if (patientQ.isLoading) {
+  if (patientQ.isFetching || patientQ.isPending) {
     return (
       <PatientSkeleton />
     )

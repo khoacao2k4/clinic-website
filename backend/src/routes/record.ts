@@ -65,7 +65,7 @@ router.get("/:recordId", async (req, res) => {
         visitDate: true,
         filledInfo: true,
         ...(includePatient
-          ? { patient: { select: { id: true, name: true, phoneNumber: true, yearOfBirth: true, gender: true } } }
+          ? { patient: { select: { id: true } } }
           : {}),
       },
     });

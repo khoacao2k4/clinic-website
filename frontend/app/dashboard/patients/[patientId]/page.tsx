@@ -1,8 +1,8 @@
-import PatientCard from "./patientCard";
+import PatientCard from "../../../../components/patient/patient-card";
 import Toolbar from "./toolbar";
 import RecordsPanel from "./recordPanel";
 
-export default async function Page({
+export default function Page({
   params,
   searchParams,
 }: {

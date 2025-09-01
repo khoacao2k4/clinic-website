@@ -35,7 +35,7 @@ const RecordCard = ({
             hover:cursor-pointer
         "
       onDoubleClick={() =>
-        redirect(`/dashboard/patients/${patientId}/records/${record.id}`, RedirectType.push)
+        redirect(`/dashboard/records/${record.id}`, RedirectType.push)
       }
     >
       {/* Leading dot / accent */}

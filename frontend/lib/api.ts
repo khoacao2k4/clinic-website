@@ -87,3 +87,20 @@ export async function deleteRecord(recordId: string): Promise<void> {
     throw new Error("Failed to delete record. Please try again.");
   }
 }
+
+export async function getRecord(recordId: string) {
+  try {
+    console.log("call api")
+    const res = await fetch(`${API_URL}/api/record/${recordId}?include=patient`);
+
+    if (!res.ok) {
+      let message = "Internal server error. Please try again.";
+      const data = await res.json();
+      if (data?.error) message = data.error; // use backend error
+      throw new Error(message);
+    }
+    return res.json();
+  } catch (error: any) {
+    throw new Error(error.message || "Failed to create record. Please try again.");
+  }
+}
