@@ -26,7 +26,7 @@ export default function NewRecordDialog({ patientId }: { patientId: string }) {
       setOpen(false);
       // router.push(`/dashboard/patients/${patientId}/records/${rec.id}`);
     } catch (e: any) {
-      toast.error(e?.message || "Failed to create record");
+      toast.error(e.message);
     } finally {
       setPending(false);
     }
@@ -34,7 +34,7 @@ export default function NewRecordDialog({ patientId }: { patientId: string }) {
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild><Button size="sm">New Record</Button></DialogTrigger>
+      <DialogTrigger asChild><Button>New Record</Button></DialogTrigger>
       <DialogContent>
         <DialogHeader><DialogTitle>Select visit date</DialogTitle></DialogHeader>
         <div className="flex justify-center">

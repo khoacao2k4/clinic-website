@@ -57,14 +57,23 @@ export async function fetchRecordsByPatient(patientId: string, fromDate: string,
 }
 
 export async function createRecord(input: { patientId: string; visitDate: string }) {
-  const res = await fetch(`${API_URL}/api/record`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(input),
-  });
-  if (!res.ok) 
-    throw new Error(await res.text());
-  return res.json();
+  try {
+    const res = await fetch(`${API_URL}/api/record`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(input),
+    });
+
+    if (!res.ok) {
+      let message = "Internal server error. Please try again.";
+      const data = await res.json();
+      if (data?.error) message = data.error; // use backend error
+      throw new Error(message);
+    }
+    return res.json();
+  } catch (error: any) {
+    throw new Error(error.message || "Failed to create record. Please try again.");
+  }
 }
 
 export async function deleteRecord(recordId: string): Promise<void> {

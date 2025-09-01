@@ -10,12 +10,12 @@ export default async function Page({
   searchParams: { from?: string; to?: string };
 }) {
   return (
-    <div className="max-w-6xl px-4 py-6">
+    <div className="px-4 py-6">
       <div className="grid gap-6 min-[1110px]:grid-cols-[300px_1fr]">
         <PatientCard
           patientId={params.patientId}
         />
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-4 h-dvh">
           <Toolbar patientId={params.patientId} />
           <RecordsPanel patientId={params.patientId} />
         </div>

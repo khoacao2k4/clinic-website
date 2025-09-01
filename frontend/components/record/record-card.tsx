@@ -78,7 +78,7 @@ const RecordCard = ({
                   toast.success("Record deleted");
                   onDeleted();
                 } catch (e: any) {
-                  toast.error(e?.message || "Failed to delete");
+                  toast.error("Failed to delete record. Please try again.");
                 }
               }}
             >
