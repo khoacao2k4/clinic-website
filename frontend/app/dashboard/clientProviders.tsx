@@ -6,6 +6,7 @@ import { SessionProvider } from "next-auth/react";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { Toaster } from "sonner";
 import type { Session } from "next-auth";
+import { ProgressProvider } from '@bprogress/next/app';
 
 export function ClientProviders({
   children,
@@ -20,8 +21,15 @@ export function ClientProviders({
     <QueryClientProvider client={queryClient}>
       <SessionProvider session={session}>
         <SidebarProvider>
-          <Toaster position="top-center" richColors />
-          {children}
+          <ProgressProvider 
+            height="4px"
+            color="var(--primary)"
+            options={{ showSpinner: false }}
+            shallowRouting
+          >
+            <Toaster position="top-center" richColors closeButton />
+            {children}
+          </ProgressProvider>
         </SidebarProvider>
       </SessionProvider>
     </QueryClientProvider>

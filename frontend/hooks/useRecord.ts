@@ -7,5 +7,6 @@ export function useRecord(recordId: string) {
     queryKey: ["record", recordId],
     queryFn: () => getRecord(recordId),
     retry: 1,
+    staleTime: 60 * 1000, // 1 minute
   });
 }
